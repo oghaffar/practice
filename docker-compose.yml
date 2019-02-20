@@ -1,0 +1,8 @@
+version: '3'
+services:
+  web:
+    image: oghaffar/practice:1.0
+    deploy:
+      replicas: 8
+    ports:
+      - "4567:4567"
