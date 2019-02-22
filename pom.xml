@@ -65,7 +65,7 @@
                     <configuration>
                         <archive>
                             <manifest>
-                                <mainClass>omartest.App</mainClass>
+                                <mainClass>translation.App</mainClass>
                             </manifest>
                         </archive>
                         <descriptorRefs>
