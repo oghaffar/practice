@@ -25,6 +25,10 @@ public enum AccessModifier {
         return longName;
     }
 
+    public String getShortName() {
+        return name();
+    }
+
     public static String toShortName(final String longName) throws NullPointerException {
         if (longName == null) {
             throw new NullPointerException("longName is NULL!");

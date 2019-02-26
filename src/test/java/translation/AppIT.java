@@ -12,6 +12,8 @@ import static translation.domain.AccessModifier.V;
 import static translation.domain.AccessModifier.X;
 
 public class AppIT {
+    public static final String serverAddress = "http://192.168.206.128:4567";
+
     @Test
     public void testConvertingShortNameToLongName() {
         convertToLongName(P);
@@ -30,7 +32,7 @@ public class AppIT {
 
     @Test
     public void testConvertingToShortNameWithNoQueryParameter() {
-        get("http://192.168.206.128:4567/translate/toShortName")
+        get(serverAddress + "/translate/toShortName")
                 .then()
                 .statusCode(200)
                 .body(equalTo("LongName query parameter is missing"));
@@ -38,7 +40,7 @@ public class AppIT {
 
     @Test
     public void testConvertingToLongNameWithNoQueryParameter() {
-        get("http://192.168.206.128:4567/translate/toLongName")
+        get(serverAddress + "/translate/toLongName")
                 .then()
                 .statusCode(200)
                 .body(equalTo("ShortName query parameter is missing"));
@@ -47,7 +49,7 @@ public class AppIT {
     @Test
     public void testConvertingToLongNameWithInvalidShortName() {
         given().queryParam("shortName", "invalid")
-                .when().get("http://192.168.206.128:4567/translate/toLongName")
+                .when().get(serverAddress + "/translate/toLongName")
                 .then()
                 .statusCode(200)
                 .body(equalTo("'invalid' is an invalid access modifier!"));
@@ -56,25 +58,25 @@ public class AppIT {
     @Test
     public void testConvertingToShortNameWithInvalidLongName() {
         given().queryParam("longName", "invalid")
-                .when().get("http://192.168.206.128:4567/translate/toShortName")
+                .when().get(serverAddress + "/translate/toShortName")
                 .then()
                 .statusCode(200)
                 .body(equalTo("'invalid' is an invalid access modifier!"));
     }
 
-    private void convertToLongName(AccessModifier modifier) {
-        given().queryParam("shortName", modifier.name())
-                .when().get("http://192.168.206.128:4567/translate/toLongName")
+    private void convertToLongName(final AccessModifier modifier) {
+        given().queryParam("shortName", modifier.getShortName())
+                .when().get(serverAddress + "/translate/toLongName")
                 .then()
                 .statusCode(200)
                 .body(equalTo(modifier.getLongName()));
     }
 
-    private void convertToShortName(AccessModifier modifier) {
+    private void convertToShortName(final AccessModifier modifier) {
         given().queryParam("longName", modifier.getLongName())
-                .when().get("http://192.168.206.128:4567/translate/toShortName")
+                .when().get(serverAddress + "/translate/toShortName")
                 .then()
                 .statusCode(200)
-                .body(equalTo(modifier.name()));
+                .body(equalTo(modifier.getShortName()));
     }
 }
