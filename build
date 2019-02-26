@@ -1,4 +1,0 @@
-#!/bin/bash
-
-mvn clean compile assembly:single package dockerfile:build verify
-./src/test/scripts/deploy_images.sh
