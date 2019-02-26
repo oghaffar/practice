@@ -1,6 +1,7 @@
 #!/bin/bash
 
 stackName=practiceIT
+expectedReplicas=20
 
 DOCKER_HOST=tcp://192.168.206.130:2375
 docker container rm --force $(docker container ls -q)
@@ -30,7 +31,14 @@ wait $mvn1pid
 wait $mvn2pid
 wait $mvn3pid
 
-docker stack deploy -c docker-compose.yml ${stackName} &
-#wait $!
+docker stack deploy -c docker-compose.yml ${stackName}
+
+while [ ! `docker stack ps ${stackName} | grep Running | wc -l` -eq $expectedReplicas ]
+do
+    echo sleeping for 2 seconds to allow all $expectedReplicas containers to start
+    sleep 2
+done
+
+
 
 
