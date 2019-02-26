@@ -11,6 +11,8 @@ public class App {
             String shortName = req.queryParams("shortName");
             try {
                 return AccessModifier.toLongName(shortName);
+            } catch (NullPointerException npe) {
+                return "ShortName query parameter is missing";
             } catch (Exception e) {
                 return e.getMessage();
             }
@@ -20,6 +22,8 @@ public class App {
             String longName = req.queryParams("longName");
             try {
                 return AccessModifier.toShortName(longName);
+            } catch (NullPointerException npe) {
+                return "LongName query parameter is missing";
             } catch (Exception e) {
                 return e.getMessage();
             }

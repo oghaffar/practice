@@ -9,19 +9,25 @@ public enum AccessModifier {
         this.longName = longName;
     }
 
-    public static String toLongName(final String shortName) {
+    public static String toLongName(final String shortName) throws NullPointerException {
+        if (shortName == null) {
+            throw new NullPointerException("shortName is NULL!");
+        }
+
         try {
             return AccessModifier.valueOf(shortName.toUpperCase()).longName;
-        } catch (NullPointerException npe) {
-            throw new RuntimeException("shortName is NULL!");
         } catch (IllegalArgumentException iae) {
             throw new RuntimeException("'" + shortName + "' is an invalid access modifier!");
         }
     }
 
-    public static String toShortName(final String longName) {
+    public String getLongName() {
+        return longName;
+    }
+
+    public static String toShortName(final String longName) throws NullPointerException {
         if (longName == null) {
-            throw new RuntimeException("longName is NULL!");
+            throw new NullPointerException("longName is NULL!");
         }
 
         switch (longName.toUpperCase()) {

@@ -12,6 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <skipITs>false</skipITs>
     </properties>
 
     <dependencies>
@@ -19,6 +20,11 @@
             <groupId>com.sparkjava</groupId>
             <artifactId>spark-core</artifactId>
             <version>2.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180813</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -31,7 +37,12 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>3.3.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -72,6 +83,31 @@
                             <descriptorRef>jar-with-dependencies</descriptorRef>
                         </descriptorRefs>
                     </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>Create Clean Room</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>exec</goal>
+                            </goals>
+                            <configuration>
+                                <skip>${skipITs}</skip>
+                                <executable>${project.basedir}/src/test/scripts/deploy_images.sh</executable>
+                                <workingDirectory>${project.basedir}</workingDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+
                 </plugin>
 
                 <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
