@@ -1,4 +1,4 @@
-package translation;
+package integrationtests;
 
 import org.junit.Test;
 import translation.domain.AccessModifier;
@@ -12,7 +12,7 @@ import static translation.domain.AccessModifier.V;
 import static translation.domain.AccessModifier.X;
 
 public class AppIT {
-    public static final String serverAddress = "http://192.168.206.128:4567";
+    private static final String serverAddress = "http://192.168.206.128:4567";
 
     @Test
     public void testConvertingShortNameToLongName() {

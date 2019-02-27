@@ -1,5 +1,7 @@
 package translation.domain;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import lombok.Value;
 
 import java.math.BigDecimal;
@@ -9,7 +11,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class ShoppingCart {
-    private final NumberFormat format;
+    private final transient NumberFormat format;
     private final List<LineItem> items;
 
     public ShoppingCart() {
@@ -64,6 +66,18 @@ public class ShoppingCart {
         items.clear();
     }
 
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
+
+    public static ShoppingCart fromJson(final String json) {
+        try {
+            return new Gson().fromJson(json, ShoppingCart.class);
+        } catch(JsonSyntaxException ex) {
+            throw new RuntimeException("Invalid Json: " + json, ex);
+        }
+    }
+
     @Value
     private static class LineItem {
         public static final BigDecimal discount = BigDecimal.valueOf(0.02);
@@ -72,11 +86,11 @@ public class ShoppingCart {
         private final BigDecimal price;
         private int quantity;
 
-        public BigDecimal getTotalPrice() {
+        BigDecimal getTotalPrice() {
             return price.multiply(BigDecimal.valueOf(quantity));
         }
 
-        public BigDecimal getDiscountedPrice() {
+        BigDecimal getDiscountedPrice() {
             return (price.subtract(discount).compareTo(BigDecimal.ZERO) < 0)
                     ? BigDecimal.ZERO
                     : price.subtract(discount).multiply(BigDecimal.valueOf(quantity));
