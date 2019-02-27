@@ -21,6 +21,7 @@ public class ShoppingCartIT {
     public void setUp() {
         cart.emptyCart();
     }
+
     @Test
     public void canGetTotalAndDiscountFromTheService() {
         cart.addItem("Bread", BigDecimal.valueOf(3.45), 2);
@@ -38,6 +39,21 @@ public class ShoppingCartIT {
                 .then()
                 .statusCode(200)
                 .body(equalTo("$20.77"));
+    }
+
+    @Test
+    public void canHandleInvalidJson() {
+        given().body("Invalid Json")
+                .when().post("http://192.168.206.128:4567/shoppingCart/total")
+                .then()
+                .statusCode(200)
+                .body(equalTo("Invalid request!"));
+
+        given().body("Invalid Json")
+                .when().post("http://192.168.206.128:4567/shoppingCart/totalWithDiscount")
+                .then()
+                .statusCode(200)
+                .body(equalTo("Invalid request!"));
     }
 
 }
