@@ -2,6 +2,7 @@ package translation;
 
 import translation.domain.AccessModifier;
 import translation.domain.ShoppingCart;
+import translation.service.ShoppingCartService;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -9,7 +10,9 @@ import static spark.Spark.post;
 public class App {
 
     public App() {
-        get("translate/toLongName", (req, res) -> {
+        ShoppingCartService service = new ShoppingCartService();
+
+        get("/translate/toLongName", (req, res) -> {
             String shortName = req.queryParams("shortName");
             try {
                 return AccessModifier.toLongName(shortName);
@@ -20,7 +23,7 @@ public class App {
             }
         });
 
-        get("translate/toShortName", (req, res) -> {
+        get("/translate/toShortName", (req, res) -> {
             String longName = req.queryParams("longName");
             try {
                 return AccessModifier.toShortName(longName);
@@ -31,10 +34,9 @@ public class App {
             }
         });
 
-        post("shoppingCart/total", (req, res) -> {
+        post("/shoppingCart/total", (req, res) -> {
             try {
-                ShoppingCart shoppingCart = ShoppingCart.fromJson(req.body());
-                return shoppingCart.getFormattedSum();
+                return service.getSum(ShoppingCart.fromJson(req.body()));
             } catch (Exception ex) {
                 return "Invalid request!";
             }
@@ -42,12 +44,13 @@ public class App {
 
         post("shoppingCart/totalWithDiscount", (req, res) -> {
             try {
-                ShoppingCart shoppingCart = ShoppingCart.fromJson(req.body());
-                return shoppingCart.getFormattedDiscountedSum();
+                return service.getDiscountedSum(ShoppingCart.fromJson(req.body()));
             } catch (Exception ex) {
                 return "Invalid request!";
             }
         });
+
+        get("/shoppingCart/:sessionId", (req, res) -> service.retrieveCart(req.params(":sessionId")).toJson());
     }
 
     public static void main(String[] args) {
