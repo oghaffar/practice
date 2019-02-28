@@ -7,11 +7,10 @@ expectedReplicas=9
 
 docker container rm --force $(docker container ls -q)
 docker image rm -v --force $(docker image ls -q)
-mvn dockerfile:build
-
 docker stack rm ${stackName} &
-
 wait $!
+
+mvn dockerfile:build
 
 docker stack deploy -c docker-compose.yml ${stackName}
 
@@ -22,6 +21,8 @@ do
 done
 
 sleep 1   # this sadness is needed because db is not responsive right after it has been started
+
+mvn flyway:migrate
 
 
 

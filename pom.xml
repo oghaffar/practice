@@ -126,9 +126,28 @@
                         </configuration>
                     </execution>
                 </executions>
-
             </plugin>
 
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>5.2.4</version>
+                <configuration>
+                    <url>jdbc:postgresql://192.168.206.128:5432/postgres</url>
+                    <user>oghaffar</user>
+                    <password>notASecret</password>
+                    <schemas>
+                        <schema>public</schema>
+                    </schemas>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>9.1-901-1.jdbc4</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
 
         <pluginManagement>
