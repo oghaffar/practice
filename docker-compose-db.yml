@@ -2,7 +2,8 @@ version: '3'
 services:
   db:
     image: postgres:9.4
-    restart: always
+#    networks:
+#      - myNetwork
     ports:
       - "5432:5432"
     environment:
@@ -11,3 +12,6 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
+
+#networks:
+#  myNetwork:

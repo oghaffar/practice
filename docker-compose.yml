@@ -6,3 +6,5 @@ services:
       replicas: 8
     ports:
       - "4567:4567"
+#    networks:
+#      - myNetwork

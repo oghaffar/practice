@@ -20,6 +20,8 @@ do
     sleep 2
 done
 
+sleep 2
+
 mvn querydsl:export flyway:migrate
 
 
