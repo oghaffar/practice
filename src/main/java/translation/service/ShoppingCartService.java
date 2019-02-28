@@ -6,8 +6,8 @@ import translation.repository.ShoppingCartRepository;
 public class ShoppingCartService {
     private final ShoppingCartRepository repository;
 
-    public ShoppingCartService() {
-        this.repository = new ShoppingCartRepository();
+    public ShoppingCartService(final ShoppingCartRepository repository) {
+        this.repository = repository;
     }
 
     public String getSum(final ShoppingCart shoppingCart) {
@@ -24,7 +24,6 @@ public class ShoppingCartService {
             repository.persistShoppingCart(shoppingCart);
             return shoppingCart.getFormattedDiscountedSum();
         } catch(Exception e) {
-            e.printStackTrace();
             return "Invalid request!";
         }
     }
@@ -33,7 +32,6 @@ public class ShoppingCartService {
         try {
             return repository.retrieveShoppingCart(sessionId);
         } catch(Exception ex) {
-            ex.printStackTrace();
             return new ShoppingCart();
         }
     }

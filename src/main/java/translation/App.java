@@ -2,6 +2,7 @@ package translation;
 
 import translation.domain.AccessModifier;
 import translation.domain.ShoppingCart;
+import translation.repository.ShoppingCartRepository;
 import translation.service.ShoppingCartService;
 
 import static spark.Spark.get;
@@ -10,7 +11,7 @@ import static spark.Spark.post;
 public class App {
 
     public App() {
-        ShoppingCartService service = new ShoppingCartService();
+        ShoppingCartService service = new ShoppingCartService(new ShoppingCartRepository());
 
         get("/translate/toLongName", (req, res) -> {
             String shortName = req.queryParams("shortName");

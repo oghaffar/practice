@@ -2,6 +2,7 @@ package translation.domain;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -10,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+@EqualsAndHashCode
 public class ShoppingCart {
     private final transient NumberFormat format;
     private final List<Item> items;
